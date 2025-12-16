@@ -33,7 +33,7 @@ and several intermediate CSVs in:
 - `config.yaml` – conversion settings + input paths + country list
 - `config_pypsa_override.yaml` – convenience override config for running PyPSA-Eur preprocessing
 - `scripts/` – conversion scripts
-- `core_files/` – EnergyScopeTD core tables + `misc.json` required by `.dat` writer
+- `core_files/` – EnergyScopeTD core tables + additional input
 - `envs/` – conda env definitions for Snakemake rules
 - `solve_per_country.ipynb` – example notebook to run/inspect country data
 
