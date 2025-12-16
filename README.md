@@ -88,6 +88,7 @@ preprocessed weather data in advance by running:
 
 ```bash
 python EnergyScopeTD-Eur/scripts/retrieve_weather_data.py <year>
+```
 
 If the required PyPSA-Eur outputs do not yet exist, run:
 
