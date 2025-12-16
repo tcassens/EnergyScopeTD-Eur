@@ -1,0 +1,11 @@
+name: conversion-energyscope-demands
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9
+  - pandas
+  - numpy
+  - xarray
+  - pip
+  - pip:
+      - amplpy

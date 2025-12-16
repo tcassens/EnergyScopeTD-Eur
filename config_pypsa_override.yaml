@@ -1,0 +1,73 @@
+# Override configuration for running PyPSA-Eur from the EnergyScope workflow.
+# Adjust run metadata, scenario settings, country selection, snapshot window and
+# atlite cutout definitions here to match the converted dataset you want to
+# produce. These values complement the defaults in `config/config.default.yaml`.
+run:
+  name: "Europe_2015_39_2050" # change to run name in the format "Europe_<year>_<num_nodes>_<planning_horizon>"
+  disable_progressbar: true
+  shared_resources:
+    policy: false
+  shared_cutouts: true
+
+scenario:
+  clusters:
+  - 39
+  opts:
+  - ''
+  sector_opts:
+  - T-H-B-I-A
+  planning_horizons:
+  - 2050 # change to planning horizon
+
+countries:
+- AL
+- AT
+- BA
+- BE
+- BG
+- CH
+- CZ
+- DE
+- DK
+- EE
+- ES
+- FI
+- FR
+- GB
+- GR
+- HR
+- HU
+- IE
+- IT
+- LT
+- LU
+- LV
+- ME
+- MK
+- NL
+- 'NO'
+- PL
+- PT
+- RO
+- RS
+- SE
+- SI
+- SK
+- XK
+
+snapshots: # change to year
+  start: "2015-01-01"
+  end: "2016-01-01"
+  inclusive: 'left'
+
+atlite:
+  cutout_directory: cutouts
+  default_cutout: europe-era5_2015 # change to coutout name
+  cutouts:
+    europe-era5_2015: # change to coutout name
+      module: [era5]
+      x: [-12., 42.]
+      y: [33., 72.]
+      dx: 0.25
+      dy: 0.25
+      years: ['2015'] # change to year

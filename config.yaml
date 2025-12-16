@@ -1,0 +1,243 @@
+# Default configuration for the conversion_energyscope workflow. Includes the
+# weather years, clustering settings, planning horizons, file layout templates,
+# and the ISO country list meant to be processed. Update the values below (or
+# override them via a user-specific config) to point the workflow at the desired
+# datasets, outputs and geographic scope.
+
+weather_years: [2019] #change to year (multiple years possible)
+clusters: [39] # change to number of clusters
+horizons: [2050] # change to planning horizon
+
+# Paths to the needed input files with wildcards for year, clusters and horizon
+paths:
+  pypsa_network: "resources/Europe_{year}_{clusters}_{horizon}/networks/base_s_{clusters}__T-H-B-I-A_{horizon}.nc"
+  biomass_csv: "resources/Europe_{year}_{clusters}_{horizon}/biomass_potentials_all_{clusters}_{horizon}.csv"
+  europe_mobility_csv: "data/jrc-idees-2021"
+  eu27_mobility_csv: "data/jrc-idees-2021/EU27/JRC-IDEES-2021_Transport_EU27.xlsx"
+  europe_energy_damands_csv: "data/eurostat/Balances-April2023"
+  transport_demand_csv: "resources/Europe_{year}_{clusters}_{horizon}/transport_demand_s_{clusters}.csv"
+  energy_totals_csv: "resources/Europe_{year}_{clusters}_{horizon}/pop_weighted_energy_totals_s_{clusters}.csv"
+  temp_soil_nc: "resources/Europe_{year}_{clusters}_{horizon}/temp_soil_total_base_s_{clusters}.nc"
+  temp_air_nc: "resources/Europe_{year}_{clusters}_{horizon}/temp_air_total_base_s_{clusters}.nc"
+  pop_csv: "resources/Europe_{year}_{clusters}_{horizon}/pop_layout_base_s_{clusters}.csv"
+  cop_profiles_nc: "resources/Europe_{year}_{clusters}_{horizon}/cop_profiles_base_s_{clusters}_{horizon}.nc"
+  profile_hydro_nc: "resources/Europe_{year}_{clusters}_{horizon}/profile_hydro.nc"
+  industrial_production_csv: "resources/Europe_{year}_{clusters}_{horizon}/industrial_production_per_country_tomorrow_{horizon}.csv"
+
+# ISO country codes that have RET and demand time series
+countries:
+  - AL
+  - AT
+  - BA
+  - BE
+  - BG
+  - CH
+  - CZ
+  - DE
+  - DK
+  - EE
+  - ES
+  - FI
+  - FR
+  - GB
+  - GR
+  - HR
+  - HU
+  - IE
+  - IT
+  - LT
+  - LU
+  - LV
+  - ME
+  - MK
+  - NL
+  - "NO"
+  - PL
+  - PT
+  - RO
+  - RS
+  - SE
+  - SI
+  - SK
+  - XK
+
+typical_days:
+  n_TDs: 12
+  n_ts: 9
+  weights: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+  print_graphs: false
+
+# Default biomass source -> EnergyScope resource mapping.
+# Adjust entries here to customise the aggregation.
+biomass_mapping:
+  Agricultural waste: WET_BIOMASS
+  # Bioethanol barley, wheat, grain maize, oats, other cereals and rye: 
+  # C&P_RW: 
+  Fuelwood residues: WOOD
+  FuelwoodRW: WOOD
+  Manure solid, liquid: WET_BIOMASS
+  #Miscanthus, switchgrass, RCG
+  Municipal waste: WASTE
+  Poplar: WOOD
+  #Rape seed:
+  Residues from landscape care: WET_BIOMASS
+  Sawdust: WOOD
+  Secondary Forestry residues - woodchips: WOOD
+  Sludge: WET_BIOMASS
+  # Sugar from sugar beet:
+  # Sunflower, soya seed:
+  Willow: WOOD
+
+
+# EnergyScope resource template defaults. Override values here if needed.
+resource_template:
+  - {resource: ELECTRICITY,   category: Non-renewable, subcategory: Other non-renewable, avail: 0.0,  gwp_op: 0.206485714, c_op: 0.08433}
+  - {resource: GASOLINE,      category: Non-renewable, subcategory: Fossil fuel,         avail: .inf, gwp_op: 0.3448,      c_op: 0.082366044}
+  - {resource: DIESEL,        category: Non-renewable, subcategory: Fossil fuel,         avail: .inf, gwp_op: 0.3148,      c_op: 0.079743788}
+  - {resource: BIOETHANOL,    category: Renewable,     subcategory: Biofuel,             avail: .inf, gwp_op: 0.0,         c_op: 0.111}
+  - {resource: BIODIESEL,     category: Renewable,     subcategory: Biofuel,             avail: .inf, gwp_op: 0.0,         c_op: 0.12}
+  - {resource: LFO,           category: Non-renewable, subcategory: Fossil fuel,         avail: .inf, gwp_op: 0.3115,      c_op: 0.06}
+  - {resource: GAS,           category: Non-renewable, subcategory: Fossil fuel,         avail: .inf, gwp_op: 0.2666,      c_op: 0.044}
+  - {resource: GAS_RE,        category: Renewable,     subcategory: Biofuel,             avail: .inf, gwp_op: 0.0,         c_op: 0.118}
+  - {resource: WOOD,          category: Renewable,     subcategory: Biomass,             avail: 0.0,  gwp_op: 0.0,         c_op: 0.033}
+  - {resource: WET_BIOMASS,   category: Renewable,     subcategory: Biomass,             avail: 0.0,  gwp_op: 0.0,         c_op: 0.006}
+  - {resource: COAL,          category: Non-renewable, subcategory: Fossil fuel,         avail: .inf, gwp_op: 0.4014,      c_op: 0.018}
+  - {resource: URANIUM,       category: Non-renewable, subcategory: Other non-renewable, avail: .inf, gwp_op: 0.0039,      c_op: 0.004}
+  - {resource: WASTE,         category: Non-renewable, subcategory: Other non-renewable, avail: 0.0,  gwp_op: 0.0,         c_op: 0.023}
+  - {resource: H2,            category: Non-renewable, subcategory: Other non-renewable, avail: .inf, gwp_op: 0.364,       c_op: 0.088}
+  - {resource: H2_RE,         category: Renewable,     subcategory: Biofuel,             avail: .inf, gwp_op: 0.0,         c_op: 0.119}
+  - {resource: AMMONIA,       category: Non-energy,    subcategory: Non-Energy,          avail: .inf, gwp_op: 0.285,       c_op: 0.076}
+  - {resource: METHANOL,      category: Non-energy,    subcategory: Non-Energy,          avail: .inf, gwp_op: 0.3499,      c_op: 0.082}
+  - {resource: AMMONIA_RE,    category: Renewable,     subcategory: Biofuel,             avail: .inf, gwp_op: 0.0,         c_op: 0.082}
+  - {resource: METHANOL_RE,   category: Renewable,     subcategory: Biofuel,             avail: .inf, gwp_op: 0.0,         c_op: 0.111}
+  - {resource: ELEC_EXPORT,   category: Others,        subcategory: Export,              avail: 0.0,  gwp_op: 0.0,         c_op: 0.0}
+  - {resource: CO2_EMISSIONS, category: Others,        subcategory: Export,              avail: .inf, gwp_op: 0.0,         c_op: 0.0}
+  - {resource: RES_WIND,      category: Renewable,     subcategory: Resource,            avail: .inf, gwp_op: 0.0,         c_op: 0.0}
+  - {resource: RES_SOLAR,     category: Renewable,     subcategory: Resource,            avail: .inf, gwp_op: 0.0,         c_op: 0.0}
+  - {resource: RES_HYDRO,     category: Renewable,     subcategory: Resource,            avail: .inf, gwp_op: 0.0,         c_op: 0.0}
+  - {resource: RES_GEO,       category: Renewable,     subcategory: Resource,            avail: .inf, gwp_op: 0.0,         c_op: 0.0}
+  - {resource: CO2_ATM,       category: Others,        subcategory: Others,              avail: .inf, gwp_op: 0.0,         c_op: 0.0}
+  - {resource: CO2_INDUSTRY,  category: Others,        subcategory: Others,              avail: 0.0,  gwp_op: 0.0,         c_op: 0.0}
+  - {resource: CO2_CAPTURED,  category: Others,        subcategory: Others,              avail: 0.0,  gwp_op: 0.0,         c_op: 0.0}
+
+
+# EnergyScope technology template defaults. Override values here if needed.
+technology_template:
+  - {technology: NUCLEAR                 , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "NUCLEAR"                 , c_inv:  4845.73, c_maint:  102.93, gwp_constr:     707.88, lifetime:       60, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:     0}
+  - {technology: CCGT                    , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "CCGT"                    , c_inv:   771.99, c_maint:   19.55, gwp_constr:     183.79, lifetime:       25, c_p: 0.96, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: CCGT_AMMONIA            , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "CCGT_AMMONIA"            , c_inv:   771.99, c_maint:   19.55, gwp_constr:     183.79, lifetime:       25, c_p: 0.96, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: COAL_US                 , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "COAL_US"                 , c_inv:  2516.71, c_maint:   29.38, gwp_constr:      331.6, lifetime:       35, c_p: 0.87, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:     0}
+  - {technology: COAL_IGCC               , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "COAL_IGCC"               , c_inv:  3245.81, c_maint:   48.42, gwp_constr:      331.6, lifetime:       35, c_p: 0.86, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:     0}
+  - {technology: PV                      , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "PV"                      , c_inv:      870, c_maint:    9.94, gwp_constr:    2081.43, lifetime:       25, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  59.2}
+  - {technology: WIND_ONSHORE            , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "WIND_ONSHORE"            , c_inv:     1040, c_maint:    12.1, gwp_constr:     622.85, lifetime:       30, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:    10}
+  - {technology: WIND_OFFSHORE           , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "WIND_OFFSHORE"           , c_inv:  4974.63, c_maint:   34.61, gwp_constr:     622.85, lifetime:       30, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:     6}
+  - {technology: HYDRO_RIVER             , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "HYDRO_RIVER"             , c_inv:  5044.92, c_maint:   50.44, gwp_constr:    1262.82, lifetime:       40, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max: 0.115}
+  - {technology: GEOTHERMAL              , category: "ELECTRICITY"       , subcategory: "ELECTRICITY"     , tech_name: "GEOTHERMAL"              , c_inv:     7488, c_maint:  139.11, gwp_constr:   24929.09, lifetime:       30, c_p: 0.95, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:     0}
+  - {technology: IND_COGEN_GAS           , category: "HEAT_HIGH_T"       , subcategory: "HEAT_HIGH_T"     , tech_name: "IND_COGEN_GAS"           , c_inv:  1408.03, c_maint:   90.51, gwp_constr:    1024.32, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: IND_COGEN_WOOD          , category: "HEAT_HIGH_T"       , subcategory: "HEAT_HIGH_T"     , tech_name: "IND_COGEN_WOOD"          , c_inv:  1080.79, c_maint:   39.57, gwp_constr:     165.33, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: IND_COGEN_WASTE         , category: "HEAT_HIGH_T"       , subcategory: "HEAT_HIGH_T"     , tech_name: "IND_COGEN_WASTE"         , c_inv:  2927.87, c_maint:  107.94, gwp_constr:     647.82, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: IND_BOILER_GAS          , category: "HEAT_HIGH_T"       , subcategory: "HEAT_HIGH_T"     , tech_name: "IND_BOILER_GAS"          , c_inv:    58.89, c_maint:    1.18, gwp_constr:      12.32, lifetime:       17, c_p: 0.95, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: IND_BOILER_WOOD         , category: "HEAT_HIGH_T"       , subcategory: "HEAT_HIGH_T"     , tech_name: "IND_BOILER_WOOD"         , c_inv:   115.18, c_maint:     2.3, gwp_constr:      28.87, lifetime:       17, c_p:  0.9, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: IND_BOILER_OIL          , category: "HEAT_HIGH_T"       , subcategory: "HEAT_HIGH_T"     , tech_name: "IND_BOILER_OIL"          , c_inv:    54.86, c_maint:    1.18, gwp_constr:      12.32, lifetime:       17, c_p: 0.95, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: IND_BOILER_COAL         , category: "HEAT_HIGH_T"       , subcategory: "HEAT_HIGH_T"     , tech_name: "IND_BOILER_COAL"         , c_inv:   115.18, c_maint:     2.3, gwp_constr:      48.18, lifetime:       17, c_p:  0.9, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: IND_BOILER_WASTE        , category: "HEAT_HIGH_T"       , subcategory: "HEAT_HIGH_T"     , tech_name: "IND_BOILER_WASTE"        , c_inv:   115.18, c_maint:     2.3, gwp_constr:      28.87, lifetime:       17, c_p:  0.9, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: IND_DIRECT_ELEC         , category: "HEAT_HIGH_T"       , subcategory: "HEAT_HIGH_T"     , tech_name: "IND_DIRECT_ELEC"         , c_inv:   332.34, c_maint:    1.51, gwp_constr:       1.47, lifetime:       15, c_p: 0.95, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_HP_ELEC             , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_HP_ELEC"             , c_inv:   344.76, c_maint:   11.69, gwp_constr:     174.79, lifetime:       25, c_p: 0.95, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_COGEN_GAS           , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_COGEN_GAS"           , c_inv:  1254.49, c_maint:   36.68, gwp_constr:     490.88, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_COGEN_WOOD          , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_COGEN_WOOD"          , c_inv:  1080.79, c_maint:   39.57, gwp_constr:     165.33, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_COGEN_WASTE         , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_COGEN_WASTE"         , c_inv:  2927.87, c_maint:  107.94, gwp_constr:     647.82, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_COGEN_WET_BIOMASS   , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_COGEN_WET_BIOMASS"   , c_inv:  1374.44, c_maint:  111.86, gwp_constr:       1024, lifetime:       25, c_p: 0.75, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_COGEN_BIO_HYDROLYSIS, category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_COGEN_BIO_HYDROLYSIS", c_inv:   4536.9, c_maint:  221.69, gwp_constr:      647.8, lifetime:       15, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_BOILER_GAS          , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_BOILER_GAS"          , c_inv:    58.89, c_maint:    1.18, gwp_constr:      12.32, lifetime:       17, c_p: 0.95, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_BOILER_WOOD         , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_BOILER_WOOD"         , c_inv:   115.18, c_maint:     2.3, gwp_constr:      28.87, lifetime:       17, c_p:  0.9, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_BOILER_OIL          , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_BOILER_OIL"          , c_inv:    54.86, c_maint:    1.18, gwp_constr:      12.32, lifetime:       17, c_p: 0.95, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN_DEEP_GEO            , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_DEEP_GEO"            , c_inv:     1500, c_maint:    56.2, gwp_constr:     808.76, lifetime:       30, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:     0}
+  - {technology: DHN_SOLAR               , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DHN"  , tech_name: "DHN_SOLAR"               , c_inv:      362, c_maint:    0.43, gwp_constr:     221.22, lifetime:       30, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_HP_ELEC             , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_HP_ELEC"             , c_inv:   492.04, c_maint:   20.52, gwp_constr:     164.89, lifetime:       18, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_THHP_GAS            , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_THHP_GAS"            , c_inv:   315.68, c_maint:    9.23, gwp_constr:     381.93, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_COGEN_GAS           , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_COGEN_GAS"           , c_inv:  1408.03, c_maint:   90.51, gwp_constr:    1024.32, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_COGEN_OIL           , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_COGEN_OIL"           , c_inv:  1305.56, c_maint:    80.1, gwp_constr:    1024.32, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_ADVCOGEN_GAS        , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_ADVCOGEN_GAS"        , c_inv:  7242.28, c_maint:  134.97, gwp_constr:    2193.45, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_ADVCOGEN_H2         , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_ADVCOGEN_H2"         , c_inv:  7242.28, c_maint:  134.97, gwp_constr:    2193.45, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_BOILER_GAS          , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_BOILER_GAS"          , c_inv:   158.54, c_maint:    4.76, gwp_constr:      21.09, lifetime:       17, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_BOILER_WOOD         , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_BOILER_WOOD"         , c_inv:   462.44, c_maint:   16.18, gwp_constr:      21.09, lifetime:       17, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_BOILER_OIL          , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_BOILER_OIL"          , c_inv:   142.38, c_maint:    8.54, gwp_constr:      21.09, lifetime:       17, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_SOLAR               , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_SOLAR"               , c_inv:   719.07, c_maint:    7.98, gwp_constr:     221.22, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DEC_DIRECT_ELEC         , category: "HEAT_LOW_T"        , subcategory: "HEAT_LOW_T_DECEN", tech_name: "DEC_DIRECT_ELEC"         , c_inv:    39.98, c_maint:    0.17, gwp_constr:       1.47, lifetime:       15, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TRAMWAY_TROLLEY         , category: "MOBILITY_PASSENGER", subcategory: "MOB_PUBLIC"      , tech_name: "TRAMWAY_TROLLEY"         , c_inv:      625, c_maint:    12.5, gwp_constr:          0, lifetime:       30, c_p: 0.34, fmin_perc:         0, fmax_perc:       0.3, f_min:     0, f_max:  .inf}
+  - {technology: BUS_COACH_DIESEL        , category: "MOBILITY_PASSENGER", subcategory: "MOB_PUBLIC"      , tech_name: "BUS_COACH_DIESEL"        , c_inv:   611.11, c_maint:   30.56, gwp_constr:          0, lifetime:       15, c_p:  0.3, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BUS_COACH_HYDIESEL      , category: "MOBILITY_PASSENGER", subcategory: "MOB_PUBLIC"      , tech_name: "BUS_COACH_HYDIESEL"      , c_inv:   833.33, c_maint:   33.33, gwp_constr:          0, lifetime:       15, c_p:  0.3, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BUS_COACH_CNG_STOICH    , category: "MOBILITY_PASSENGER", subcategory: "MOB_PUBLIC"      , tech_name: "BUS_COACH_CNG_STOICH"    , c_inv:   611.11, c_maint:   30.56, gwp_constr:          0, lifetime:       15, c_p:  0.3, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BUS_COACH_FC_HYBRIDH2   , category: "MOBILITY_PASSENGER", subcategory: "MOB_PUBLIC"      , tech_name: "BUS_COACH_FC_HYBRIDH2"   , c_inv:  1041.67, c_maint:   31.25, gwp_constr:          0, lifetime:       15, c_p:  0.3, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TRAIN_PUB               , category: "MOBILITY_PASSENGER", subcategory: "MOB_PUBLIC"      , tech_name: "TRAIN_PUB"               , c_inv:  1506.02, c_maint:   54.35, gwp_constr:          0, lifetime:       40, c_p: 0.28, fmin_perc:         0, fmax_perc:       0.5, f_min:     0, f_max:  .inf}
+  - {technology: CAR_GASOLINE            , category: "MOBILITY_PASSENGER", subcategory: "MOB_PRIVATE"     , tech_name: "CAR_GASOLINE"            , c_inv:   420.29, c_maint:      24, gwp_constr:        342, lifetime:       10, c_p: 0.05, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: CAR_DIESEL              , category: "MOBILITY_PASSENGER", subcategory: "MOB_PRIVATE"     , tech_name: "CAR_DIESEL"              , c_inv:   434.45, c_maint:      24, gwp_constr:        346, lifetime:       10, c_p: 0.05, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: CAR_NG                  , category: "MOBILITY_PASSENGER", subcategory: "MOB_PRIVATE"     , tech_name: "CAR_NG"                  , c_inv:   429.38, c_maint:      24, gwp_constr:        342, lifetime:       10, c_p: 0.05, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: CAR_METHANOL            , category: "MOBILITY_PASSENGER", subcategory: "MOB_PRIVATE"     , tech_name: "CAR_METHANOL"            , c_inv:   420.29, c_maint:      24, gwp_constr:        342, lifetime:       10, c_p: 0.05, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: CAR_HEV                 , category: "MOBILITY_PASSENGER", subcategory: "MOB_PRIVATE"     , tech_name: "CAR_HEV"                 , c_inv:   429.41, c_maint:      34, gwp_constr:        519, lifetime:       10, c_p: 0.05, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: CAR_PHEV                , category: "MOBILITY_PASSENGER", subcategory: "MOB_PRIVATE"     , tech_name: "CAR_PHEV"                , c_inv:   456.37, c_maint:      34, gwp_constr:        519, lifetime:       10, c_p: 0.05, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: CAR_BEV                 , category: "MOBILITY_PASSENGER", subcategory: "MOB_PRIVATE"     , tech_name: "CAR_BEV"                 , c_inv:   449.82, c_maint:      10, gwp_constr:        385, lifetime:       10, c_p: 0.05, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: CAR_FUEL_CELL           , category: "MOBILITY_PASSENGER", subcategory: "MOB_PRIVATE"     , tech_name: "CAR_FUEL_CELL"           , c_inv:   434.77, c_maint:      10, gwp_constr:        786, lifetime:       10, c_p: 0.05, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TRAIN_FREIGHT           , category: "MOBILITY_FREIGHT"  , subcategory: "MOB_FREIGHT_RAIL", tech_name: "TRAIN_FREIGHT"           , c_inv:   104.42, c_maint:    2.09, gwp_constr:          0, lifetime:       40, c_p: 0.34, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BOAT_FREIGHT_DIESEL     , category: "MOBILITY_FREIGHT"  , subcategory: "MOB_FREIGHT_BOAT", tech_name: "BOAT_FREIGHT_DIESEL"     , c_inv:    76.39, c_maint:    3.82, gwp_constr:          0, lifetime:       40, c_p: 0.11, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BOAT_FREIGHT_NG         , category: "MOBILITY_FREIGHT"  , subcategory: "MOB_FREIGHT_BOAT", tech_name: "BOAT_FREIGHT_NG"         , c_inv:    76.39, c_maint:    3.82, gwp_constr:          0, lifetime:       40, c_p: 0.11, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BOAT_FREIGHT_METHANOL   , category: "MOBILITY_FREIGHT"  , subcategory: "MOB_FREIGHT_BOAT", tech_name: "BOAT_FREIGHT_METHANOL"   , c_inv:    76.39, c_maint:    3.82, gwp_constr:          0, lifetime:       40, c_p: 0.11, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TRUCK_DIESEL            , category: "MOBILITY_FREIGHT"  , subcategory: "MOB_FREIGHT_ROAD", tech_name: "TRUCK_DIESEL"            , c_inv:   371.11, c_maint:   18.56, gwp_constr:          0, lifetime:       15, c_p: 0.09, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TRUCK_METHANOL          , category: "MOBILITY_FREIGHT"  , subcategory: "MOB_FREIGHT_ROAD", tech_name: "TRUCK_METHANOL"          , c_inv:   371.11, c_maint:   18.56, gwp_constr:          0, lifetime:       15, c_p: 0.09, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TRUCK_FUEL_CELL         , category: "MOBILITY_FREIGHT"  , subcategory: "MOB_FREIGHT_ROAD", tech_name: "TRUCK_FUEL_CELL"         , c_inv:   402.22, c_maint:   12.07, gwp_constr:          0, lifetime:       15, c_p: 0.09, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TRUCK_ELEC              , category: "MOBILITY_FREIGHT"  , subcategory: "MOB_FREIGHT_ROAD", tech_name: "TRUCK_ELEC"              , c_inv:   771.11, c_maint:   23.13, gwp_constr:          0, lifetime:       15, c_p: 0.09, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TRUCK_NG                , category: "MOBILITY_FREIGHT"  , subcategory: "MOB_FREIGHT_ROAD", tech_name: "TRUCK_NG"                , c_inv:   371.11, c_maint:   18.56, gwp_constr:          0, lifetime:       15, c_p: 0.09, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: EFFICIENCY              , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "EFFICIENCY"              , c_inv:     3200, c_maint:       0, gwp_constr:          0, lifetime:        1, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DHN                     , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "DHN"                     , c_inv:   825.88, c_maint:       0, gwp_constr:          0, lifetime:       60, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: GRID                    , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "GRID"                    , c_inv: 74919.06, c_maint:       0, gwp_constr:          0, lifetime:       80, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: H2_ELECTROLYSIS         , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "H2_ELECTROLYSIS"         , c_inv:    696.2, c_maint:   19.15, gwp_constr:          0, lifetime:       15, c_p:  0.9, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: SMR                     , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "SMR"                     , c_inv:   681.24, c_maint:   62.87, gwp_constr:          0, lifetime:       25, c_p: 0.86, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: H2_BIOMASS              , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "H2_BIOMASS"              , c_inv:  2525.39, c_maint:  177.91, gwp_constr:          0, lifetime:       25, c_p: 0.86, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: GASIFICATION_SNG        , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "GASIFICATION_SNG"        , c_inv:     2525, c_maint:     178, gwp_constr:          0, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: SYN_METHANATION         , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "SYN_METHANATION"         , c_inv:    262.2, c_maint:   66.99, gwp_constr:          0, lifetime:       40, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BIOMETHANATION          , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "BIOMETHANATION"          , c_inv:   986.05, c_maint:   13.66, gwp_constr:          0, lifetime:       20, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BIO_HYDROLYSIS          , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "BIO_HYDROLYSIS"          , c_inv:  1591.91, c_maint:  108.54, gwp_constr:          0, lifetime:       15, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: PYROLYSIS_TO_LFO        , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "PYROLYSIS_TO_LFO"        , c_inv:  1344.22, c_maint:    61.1, gwp_constr:          0, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: PYROLYSIS_TO_FUELS      , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "PYROLYSIS_TO_FUELS"      , c_inv:     1365, c_maint:      38, gwp_constr:          0, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: ATM_CCS                 , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "ATM_CCS"                 , c_inv:     5160, c_maint:  128.09, gwp_constr:          0, lifetime:       40, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: INDUSTRY_CCS            , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "INDUSTRY_CCS"            , c_inv:     2580, c_maint:   64.04, gwp_constr:          0, lifetime:       40, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: SYN_METHANOLATION       , category: "NON_ENERGY"        , subcategory: "METHANOL"        , tech_name: "SYN_METHANOLATION"       , c_inv:  1679.65, c_maint:   47.66, gwp_constr:          0, lifetime:       20, c_p: 0.95, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: METHANE_TO_METHANOL     , category: "NON_ENERGY"        , subcategory: "METHANOL"        , tech_name: "METHANE_TO_METHANOL"     , c_inv:   958.58, c_maint:   41.92, gwp_constr:          0, lifetime:       25, c_p: 0.85, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BIOMASS_TO_METHANOL     , category: "NON_ENERGY"        , subcategory: "METHANOL"        , tech_name: "BIOMASS_TO_METHANOL"     , c_inv:     2520, c_maint:    38.5, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: HABER_BOSCH             , category: "NON_ENERGY"        , subcategory: "AMMONIA"         , tech_name: "HABER_BOSCH"             , c_inv:      847, c_maint:   16.56, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: AMMONIA_TO_H2           , category: "INFRASTRUCTURE"    , subcategory: "INFRASTRUCTURE"  , tech_name: "AMMONIA_TO_H2"           , c_inv:   681.24, c_maint:   62.87, gwp_constr:          0, lifetime:       25, c_p: 0.86, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BATT_LI                 , category: "Electricity storage", subcategory: "BATTERY"            , tech_name: "BATT_LI"                 , c_inv:      302, c_maint:    0.47, gwp_constr:       61.3, lifetime:       15, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: BEV_BATT                , category: "Electricity storage", subcategory: "BATTERY_EV"         , tech_name: "BEV_BATT"                , c_inv:        0, c_maint:       0, gwp_constr:          0, lifetime:        1, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: PHEV_BATT               , category: "Electricity storage", subcategory: "BATTERY_EV"         , tech_name: "PHEV_BATT"               , c_inv:        0, c_maint:       0, gwp_constr:          0, lifetime:        1, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: PHS                     , category: "Electricity storage", subcategory: "PHS"                 , tech_name: "PHS"                     , c_inv:     58.8, c_maint:       0, gwp_constr:       8.33, lifetime:       50, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:   6.5}
+  - {technology: TS_DEC_DIRECT_ELEC      , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_DIRECT_ELEC"      , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DEC_HP_ELEC          , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_HP_ELEC"          , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DEC_THHP_GAS         , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_THHP_GAS"         , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DEC_COGEN_GAS        , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_COGEN_GAS"        , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DEC_COGEN_OIL        , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_COGEN_OIL"        , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DEC_ADVCOGEN_GAS     , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_ADVCOGEN_GAS"     , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DEC_ADVCOGEN_H2      , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_ADVCOGEN_H2"      , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DEC_BOILER_GAS       , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_BOILER_GAS"       , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DEC_BOILER_WOOD      , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_BOILER_WOOD"      , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DEC_BOILER_OIL       , category: "Thermal storage"   , subcategory: "LOCAL_TES"          , tech_name: "TS_DEC_BOILER_OIL"       , c_inv:    18.97, c_maint:    0.13, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DHN_DAILY            , category: "Thermal storage"   , subcategory: "HOURLY_DHN_TES"    , tech_name: "TS_DHN_DAILY"            , c_inv:        3, c_maint:    0.01, gwp_constr:          0, lifetime:       40, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_DHN_SEASONAL         , category: "Thermal storage"   , subcategory: "SEASONAL_TES"      , tech_name: "TS_DHN_SEASONAL"         , c_inv:     0.54, c_maint:       0, gwp_constr:          0, lifetime:       25, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: TS_HIGH_TEMP            , category: "Thermal storage"   , subcategory: "HOURLY_HTH_TES"    , tech_name: "TS_HIGH_TEMP"            , c_inv:    28.03, c_maint:     0.3, gwp_constr:          0, lifetime:       25, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: GAS_STORAGE             , category: "Other storage"     , subcategory: "BUFFER_NG"         , tech_name: "GAS_STORAGE"             , c_inv:     0.05, c_maint:       0, gwp_constr:          0, lifetime:       50, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: H2_STORAGE              , category: "Other storage"     , subcategory: "BUFFER_H2"         , tech_name: "H2_STORAGE"              , c_inv:     6.19, c_maint:    0.39, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: DIESEL_STORAGE          , category: "Other storage"     , subcategory: "FUEL_STORAGE"      , tech_name: "DIESEL_STORAGE"          , c_inv:     0.01, c_maint:       0, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: GASOLINE_STORAGE        , category: "Other storage"     , subcategory: "FUEL_STORAGE"      , tech_name: "GASOLINE_STORAGE"        , c_inv:     0.01, c_maint:       0, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: LFO_STORAGE             , category: "Other storage"     , subcategory: "FUEL_STORAGE"      , tech_name: "LFO_STORAGE"             , c_inv:     0.01, c_maint:       0, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: AMMONIA_STORAGE         , category: "Other storage"     , subcategory: "AMMONIA_STORAGE"   , tech_name: "AMMONIA_STORAGE"         , c_inv:     0.01, c_maint:       0, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: METHANOL_STORAGE        , category: "Other storage"     , subcategory: "METHANOL_STORAGE"  , tech_name: "METHANOL_STORAGE"        , c_inv:     0.01, c_maint:       0, gwp_constr:          0, lifetime:       20, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+  - {technology: CO2_STORAGE             , category: "Other storage"     , subcategory: "CO2_PURE_STO"     , tech_name: "CO2_STORAGE"             , c_inv:     49.5, c_maint:     0.5, gwp_constr:          0, lifetime:       30, c_p:    1, fmin_perc:         0, fmax_perc:         1, f_min:     0, f_max:  .inf}
+
+demand_template:
+  - {Category: Electricity, Subcategory: baseload     , parameter name: ELECTRICITY       , HOUSEHOLDS: 0.0,  SERVICES: 0.0, INDUSTRY: 0.0, TRANSPORTATION: 0.0, Units: "[GWh]" }
+  - {Category: Electricity, Subcategory: lighting     , parameter name: LIGHTING          , HOUSEHOLDS: 0.0,  SERVICES: 0.0, INDUSTRY: 0.0, TRANSPORTATION: 0.0, Units: "[GWh]" }
+  - {Category: Heat       , Subcategory: process heat , parameter name: HEAT_HIGH_T       , HOUSEHOLDS: 0.0,  SERVICES: 0.0, INDUSTRY: 0.0, TRANSPORTATION: 0.0, Units: "[GWh]" }
+  - {Category: Heat       , Subcategory: space heating, parameter name: HEAT_LOW_T_SH     , HOUSEHOLDS: 0.0,  SERVICES: 0.0, INDUSTRY: 0.0, TRANSPORTATION: 0.0, Units: "[GWh]" }
+  - {Category: Heat       , Subcategory: hot water    , parameter name: HEAT_LOW_T_HW     , HOUSEHOLDS: 0.0,  SERVICES: 0.0, INDUSTRY: 0.0, TRANSPORTATION: 0.0, Units: "[GWh]" }
+  - {Category: Mobility   , Subcategory: passenger    , parameter name: MOBILITY_PASSENGER, HOUSEHOLDS: 0.0,  SERVICES: 0.0, INDUSTRY: 0.0, TRANSPORTATION: 0.0, Units: "[Mpkm]" }
+  - {Category: Mobility   , Subcategory: freight      , parameter name: MOBILITY_FREIGHT  , HOUSEHOLDS: 0.0,  SERVICES: 0.0, INDUSTRY: 0.0, TRANSPORTATION: 0.0, Units: "[Mtkm]" }
+  - {Category: Non energy , Subcategory: Non energy   , parameter name: NON_ENERGY        , HOUSEHOLDS: 0.0,  SERVICES: 0.0, INDUSTRY: 0.0, TRANSPORTATION: 0.0, Units: "[GWh]" }
