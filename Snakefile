@@ -3,7 +3,7 @@ from pathlib import Path
 from snakemake.io import directory
 
 # Load configuration
-configfile: "conversion_energyscope/config.yaml"
+configfile: "EnergyScopeTD-Eur/config.yaml"
 
 # Parameters
 WEATHER_YEARS = config.get("weather_years", [2013])
@@ -34,7 +34,7 @@ HYDRO_PROFILE_NC = config["paths"]["profile_hydro_nc"]
 INDUSTRIAL_PRODUCTION_CSV = config["paths"]["industrial_production_csv"]
 
 # Output directories
-BASE_OUT_DIR = "conversion_energyscope/output/Europe_{year}_{clusters}_{horizon}"
+BASE_OUT_DIR = "EnergyScopeTD-Eur/output/Europe_{year}_{clusters}_{horizon}"
 INTERMEDIATE_DIR = BASE_OUT_DIR + "/intermediate"
 RESOURCES_DIR = BASE_OUT_DIR + "/resources"
 TECH_DIR = BASE_OUT_DIR + "/technologies"
