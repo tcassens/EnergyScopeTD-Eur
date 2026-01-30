@@ -60,6 +60,8 @@ git checkout 3a058b40    # v2025.07.0-36-g3a058b40
 
 All subsequent commands in this guide assume you stay inside that checkout.
 
+---
+
 ### 1. Clone the repository
 
 Clone this repository into your **PyPSA-Eur root directory**:
