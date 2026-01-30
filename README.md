@@ -56,6 +56,9 @@ Run the conversion workflow inside this specific PyPSA-Eur snapshot (3a058b40) t
 git clone https://github.com/PyPSA/pypsa-eur.git
 cd pypsa-eur
 git checkout 3a058b40    # v2025.07.0-36-g3a058b40
+conda update conda
+conda env create -f envs/<your-platform>.lock.yaml #see pypsa-eur/doc/installation.rst
+conda activate pypsa-eur
 ```
 
 All subsequent commands in this guide assume you stay inside that checkout.
