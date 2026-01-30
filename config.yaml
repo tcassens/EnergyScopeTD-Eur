@@ -4,7 +4,7 @@
 # override them via a user-specific config) to point the workflow at the desired
 # datasets, outputs and geographic scope.
 
-weather_years: [2019] #change to year (multiple years possible)
+weather_years: [2015] #change to year (multiple years possible)
 clusters: [39] # change to number of clusters
 horizons: [2050] # change to planning horizon
 

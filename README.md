@@ -48,6 +48,19 @@ and several intermediate CSVs in:
 ---
 ## Quickstart
 
+### 0. Pin the PyPSA-Eur base version
+
+Run the conversion workflow inside a specific PyPSA-Eur snapshot to guarantee
+reproducible inputs. From your workspace root:
+
+```bash
+git clone https://github.com/PyPSA/pypsa-eur.git
+cd pypsa-eur
+git checkout 3a058b40    # v2025.07.0-36-g3a058b40
+```
+
+All subsequent commands in this guide assume you stay inside that checkout.
+
 ### 1. Clone the repository
 
 Clone this repository into your **PyPSA-Eur root directory**:
