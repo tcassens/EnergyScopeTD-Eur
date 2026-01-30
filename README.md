@@ -133,7 +133,7 @@ in the accompanying semester project thesis:
 
 - **Bridging the Modeling Gap: Automating Data Flow from PyPSA to EnergyScope**  
   Till Cassens, ETH Zürich (2025)  
-  [`docs/thesis.pdf`](docs/thesis.pdf)
+  [`docs/Semester_Project_Cassens_EPSE.pdf`](docs/Semester_Project_Cassens_EPSE.pdf)
 
 ---
 
