@@ -50,8 +50,7 @@ and several intermediate CSVs in:
 
 ### 0. Pin the PyPSA-Eur base version
 
-Run the conversion workflow inside a specific PyPSA-Eur snapshot to guarantee
-reproducible inputs. From your workspace root:
+Run the conversion workflow inside this specific PyPSA-Eur snapshot (3a058b40) to guarantee reproducible inputs. From your workspace root:
 
 ```bash
 git clone https://github.com/PyPSA/pypsa-eur.git
