@@ -57,7 +57,7 @@ git clone https://github.com/PyPSA/pypsa-eur.git
 cd pypsa-eur
 git checkout 3a058b40    # v2025.07.0-36-g3a058b40
 conda update conda
-conda create -n pypsa-eur -f envs/<insert_your_machine>.txt #see pypsa-eur/doc/installation.rst
+conda env create -f envs/<your-platform>.lock.yaml #see pypsa-eur/doc/installation.rst
 conda activate pypsa-eur
 ```
 
