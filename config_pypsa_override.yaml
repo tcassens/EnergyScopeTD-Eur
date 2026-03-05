@@ -61,13 +61,30 @@ snapshots: # change to year
   inclusive: 'left'
 
 atlite:
-  cutout_directory: cutouts
-  default_cutout: europe-era5_2015 # change to coutout name
+  default_cutout: "europe-2015-era5" # change to cutout name
+  nprocesses: 16
+  show_progress: false
+  plot_availability_matrix: false
   cutouts:
-    europe-era5_2015: # change to coutout name
-      module: [era5]
-      x: [-12., 42.]
-      y: [33., 72.]
-      dx: 0.25
-      dy: 0.25
-      years: ['2015'] # change to year
+    "europe-2015-era5": # change to cutout name
+      module: era5
+      x:
+      - -12.0
+      - 42.0
+      'y':
+      - 33.0
+      - 72.0
+      dx: 0.3
+      dy: 0.3
+      time:
+      - '2015' #change to year
+      - '2015' #change to year
+      chunks:
+        time: 500
+      prepare_kwargs:
+        features:
+        - temperature
+        - height
+        - runoff
+        monthly_requests: true
+        tmpdir: ./cutouts_tmp/

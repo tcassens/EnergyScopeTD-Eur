@@ -299,7 +299,7 @@ rule energyscope_dat:
 rule typical_days:
     input:
         timeseries=TIME_DIR + "/time_series_{country}.csv",
-        mod="conversion_energyscope/core_files/TD_main.mod"
+        mod="EnergyScopeTD-Eur/core_files/TD_main.mod"
     output:
         td_dat=DAT_DIR + "/ESTD_{country}_12TD.dat"
     params:

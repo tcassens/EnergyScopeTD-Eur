@@ -38,7 +38,7 @@ CORE_FILE_MAP = {
     'storage_characteristics': "Storage_characteristics.csv",
 }
 JSON_FILENAME = "misc.json"
-BASE_OUTPUT_TEMPLATE = "conversion_energyscope/output/Europe_{year}_{clusters}_{horizon}"
+BASE_OUTPUT_TEMPLATE = "EnergyScopeTD-Eur/output/Europe_{year}_{clusters}_{horizon}"
 
 
 def _load_csv(path: Path) -> pd.DataFrame:

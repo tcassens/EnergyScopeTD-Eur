@@ -15,11 +15,11 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-if str(PACKAGE_ROOT) not in sys.path:
-    sys.path.insert(0, str(PACKAGE_ROOT))
+WORKFLOW_ROOT = Path(__file__).resolve().parents[2] / "EnergyScopeTD-Eur"
+if str(WORKFLOW_ROOT) not in sys.path:
+    sys.path.insert(0, str(WORKFLOW_ROOT))
 
-from conversion_energyscope.scripts._helpers import ensure_parent, is_valid_country, country_key
+from scripts._helpers import ensure_parent, is_valid_country, country_key
 
 if TYPE_CHECKING:
     from snakemake.script import Snakemake

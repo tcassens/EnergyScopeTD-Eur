@@ -9,7 +9,6 @@ and existing downloads are skipped.
 import argparse
 import os
 import sys
-from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 
@@ -18,7 +17,8 @@ FILE_URL_TEMPLATE = (
     "5c1be6cd-71a1-45a7-8b78-5f18bbbe5728/download/"
     "europe-era5_{year}.nc"
 )
-DEFAULT_OUTPUT_DIR = "cutouts"
+DEFAULT_OUTPUT_DIR = "data/cutout/archive/v1.0"
+FILENAME_TEMPLATE = "europe-{year}-era5.nc"
 
 # Function to convert bytes to a human-readable format
 def human_readable_size(num_bytes: int) -> str:
@@ -30,16 +30,10 @@ def human_readable_size(num_bytes: int) -> str:
             return f"{num:.1f} {unit}"
         num /= step
 
-# Function to create a safe filename from a URL
-def safe_filename_from_url(url: str) -> str:
-    path = urlparse(url).path
-    name = os.path.basename(path)
-    return name or "downloaded_file"
-
 # Function to download a file with progress indication
-def download_file(url: str, out_dir: str):
+def download_file(url: str, out_dir: str, year: int):
     os.makedirs(out_dir, exist_ok=True)
-    filename = safe_filename_from_url(url)
+    filename = FILENAME_TEMPLATE.format(year=year)
     out_path = os.path.join(out_dir, filename)
 
     if os.path.exists(out_path):
@@ -97,7 +91,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Download ERA5 PyPSA-Eur cutout file for a given year."
     )
-    parser.add_argument("year", type=int, help="Year to download (e.g. 2017)")
+    parser.add_argument("year", type=int, help="Year to download (e.g. 2015)")
     parser.add_argument(
         "-o",
         "--output-dir",
@@ -109,7 +103,7 @@ def main():
     url = FILE_URL_TEMPLATE.format(year=args.year)
 
     try:
-        download_file(url, args.output_dir)
+        download_file(url, args.output_dir, args.year)
     except Exception as e:
         print(f"[!] Error downloading {url}: {e}", file=sys.stderr)
         sys.exit(1)

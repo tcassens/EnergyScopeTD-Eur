@@ -13,11 +13,11 @@ import sys
 
 import pandas as pd
 
-PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-if str(PACKAGE_ROOT) not in sys.path:
-    sys.path.insert(0, str(PACKAGE_ROOT))
+WORKFLOW_ROOT = Path(__file__).resolve().parents[2] / "EnergyScopeTD-Eur"
+if str(WORKFLOW_ROOT) not in sys.path:
+    sys.path.insert(0, str(WORKFLOW_ROOT))
 
-from conversion_energyscope.scripts._helpers import ensure_parent, load_indexed_csv
+from scripts._helpers import ensure_parent, load_indexed_csv
 
 if TYPE_CHECKING:
     from snakemake.script import Snakemake
