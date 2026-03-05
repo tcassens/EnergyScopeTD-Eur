@@ -42,8 +42,7 @@ and several intermediate CSVs in:
 ## Requirements
 
 - A working **PyPSA-Eur** setup (including its data and Snakemake dependencies)
-- **Snakemake** (recommended via PyPSA-Eur environment)
-- **AMPL + license** for Typical Day generation via `amplpy`  
+- **AMPL license** for Typical Day generation via `amplpy`  
 
 ---
 ## Quickstart
@@ -55,10 +54,8 @@ Run the conversion workflow inside this specific PyPSA-Eur snapshot (3a058b40) t
 ```bash
 git clone https://github.com/PyPSA/pypsa-eur.git
 cd pypsa-eur
-git checkout 3a058b40    # v2025.07.0-36-g3a058b40
-conda update conda
-conda env create -f envs/<your-platform>.lock.yaml #see pypsa-eur/doc/installation.rst
-conda activate pypsa-eur
+git checkout d6383eb    # v2026.02.0
+pixi shell
 ```
 
 All subsequent commands in this guide assume you stay inside that checkout.
@@ -122,6 +119,9 @@ Make sure the selected year, clusters, and horizon match `config.yaml`.
 From the PyPSA-Eur root directory:
 
 ```bash
+pixi add amplpy pip
+.pixi/envs/default/bin/python -m amplpy.modules activate <YOUR_AMPL_CE_OR_COMMERCIAL_UUID>
+.pixi/envs/default/bin/python -m amplpy.modules install ampl cplex
 snakemake   --snakefile EnergyScopeTD-Eur/Snakefile   --cores <insert_number_of_cores>
 ```
 
