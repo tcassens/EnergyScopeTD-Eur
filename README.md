@@ -42,7 +42,8 @@ and several intermediate CSVs in:
 ## Requirements
 
 - A working **PyPSA-Eur** setup (including its data and Snakemake dependencies)
-- **AMPL license** for Typical Day generation via `amplpy`  
+- **AMPL license** for Typical Day generation via `amplpy`
+- **Pixi** installation`
 
 ---
 ## Quickstart
