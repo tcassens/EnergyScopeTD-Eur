@@ -32,10 +32,10 @@ COUNTRY_FILE_PATTERNS = {
 }
 CORE_FILE_MAP = {
     'end_use_categories': "END_USES_CATEGORIES.csv",
-    'layers_in_out': "Layers_in_out.csv",
-    'storage_eff_in': "Storage_eff_in.csv",
-    'storage_eff_out': "Storage_eff_out.csv",
-    'storage_characteristics': "Storage_characteristics.csv",
+    'layers_in_out': "layers_in_out.csv",
+    'storage_eff_in': "storage_eff_in.csv",
+    'storage_eff_out': "storage_eff_out.csv",
+    'storage_characteristics': "storage_characteristics.csv",
 }
 JSON_FILENAME = "misc.json"
 BASE_OUTPUT_TEMPLATE = "EnergyScopeTD-Eur/output/Europe_{year}_{clusters}_{horizon}"

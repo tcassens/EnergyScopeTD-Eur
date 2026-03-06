@@ -125,8 +125,8 @@ def run_td_generator(
         })
         ampl.setData(df)
 
-        ampl.setOption('solver', 'cplex')
-        ampl.setOption('cplex_options', 'outlev=1 timelimit=3600')
+        ampl.setOption('solver', 'gurobi')
+        ampl.setOption('gurobi_options', 'outlev=1 timelimit=3600')
 
         ampl.solve()
 
